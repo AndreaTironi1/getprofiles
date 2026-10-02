@@ -1,0 +1,11 @@
+config.ini
+.env
+data/
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+*.bak-*
+*.jsonl
+report*.xlsx
+input*.xlsx
