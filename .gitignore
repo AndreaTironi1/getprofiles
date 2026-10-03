@@ -9,3 +9,7 @@ __pycache__/
 *.jsonl
 report*.xlsx
 input*.xlsx
+build/
+dist/
+*.spec
+gui_settings.json

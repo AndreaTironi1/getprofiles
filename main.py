@@ -11,6 +11,7 @@ import checkpoint as ckpt
 import config as cfg
 import excel_io
 import validators
+from version import __version__
 from api_client import CircuitBreakerTripped, ProfileApiClient, UnauthorizedError
 
 logger = logging.getLogger("getprofiles")
@@ -18,6 +19,7 @@ logger = logging.getLogger("getprofiles")
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--version", action="version", version=f"getprofiles {__version__}")
     parser.add_argument("--input", required=True, help="File Excel/CSV con i codici fiscali")
     parser.add_argument("--column", default="codice_fiscale", help="Nome colonna con i CF")
     parser.add_argument("--output", default=None, help="Excel di output (default: data/report.xlsx)")

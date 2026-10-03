@@ -1,6 +1,8 @@
 # getprofiles
 
-Strumento a riga di comando che verifica quali codici fiscali di un elenco hanno un profilo su
+**Versione 1.0** · disponibile come **script Python** e come **programma Windows con finestra (`.exe`)**.
+
+Strumento che verifica quali codici fiscali di un elenco hanno un profilo su
 [App IO](https://io.italia.it) e possono ricevere messaggi dal tuo servizio.
 
 Legge un file Excel o CSV, interroga l'API GetProfile di PagoPA una riga alla volta e produce un
@@ -11,12 +13,37 @@ comunicazione verso l'esterno è la chiamata all'API di PagoPA.
 > elenchi, report o chiavi, e non deve mai contenerne. Leggi [Privacy e sicurezza](#privacy-e-sicurezza)
 > prima del primo utilizzo.
 
-## Cosa serve
+## Due modi di usarlo
+
+| | Script Python | Programma con finestra (`.exe`) |
+|---|---|---|
+| Per chi | Chi usa la riga di comando o vuole automatizzare | Chi non vuole installare nulla |
+| File | `main.py` | `GetProfiles-1.0.exe`, dalla pagina [Releases](../../releases) |
+| Requisiti | Python 3.10 o superiore, `pip install -r requirements.txt` | Solo Windows. **Python non serve** |
+| Chiave API | Variabile d'ambiente o `config.ini` | `config.ini` accanto all'`.exe` (o la chiede il programma al primo avvio) |
+| Versione | `python main.py --version` | Nel nome del file e nel titolo della finestra |
+
+In entrambi i casi serve la *subscription key* del tuo servizio su App IO, assegnata da PagoPA all'ente.
+
+## Programma con finestra (.exe)
+
+1. Scarica `GetProfiles-1.0.exe` dalla pagina [Releases](../../releases) e mettilo in una cartella a tua scelta.
+2. Fai doppio clic. Se Windows mostra un avviso SmartScreen, scegli *Ulteriori informazioni* e poi *Esegui comunque*: il file non è firmato digitalmente.
+3. Scegli il file Excel/CSV, indica il nome della colonna dei codici fiscali e premi **Avvia**. Al primo avvio il programma chiede la chiave e la salva in `config.ini`, nella stessa cartella dell'`.exe`.
+4. Al termine vedi riepilogo e dettaglio nella finestra e apri il report con **Apri Excel**.
+
+Le opzioni dello script (`--skip-existing`, `--retry-failed`, `--export-only`, rate, timeout, ...) sono nella finestra come scelte in italiano e sotto *Opzioni avanzate*. **Interrompi** ferma il lavoro tenendo i risultati già ottenuti.
+
+Per creare l'`.exe` da soli: `build_exe.bat` (richiede Python e la `.venv`), risultato in `dist/`.
+
+## Script Python
+
+### Requisiti
 
 - Python 3.10 o superiore
-- La *subscription key* del tuo servizio su App IO, assegnata da PagoPA all'ente
+- Le librerie in `requirements.txt` (`requests`, `pandas`, `openpyxl`)
 
-## Installazione
+### Installazione
 
 ```bash
 git clone <URL-DEL-REPOSITORY>
@@ -150,6 +177,9 @@ I test usano `requests-mock`: non fanno chiamate reali e non richiedono la chiav
 
 ```
 main.py          CLI e orchestrazione
+gui.py           Programma con finestra (Tkinter), stessa logica della CLI
+version.py       Numero di versione (script ed eseguibile)
+build_exe.bat    Crea l'eseguibile Windows con PyInstaller
 api_client.py    Client dell'API GetProfile: retry, rate limit, mapping esiti
 validators.py    Normalizzazione, validazione e deduplica dei codici fiscali
 checkpoint.py    Checkpoint JSONL e logica di ripresa
